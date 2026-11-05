@@ -111,6 +111,15 @@ subroutine equations
 ! ******************** Activity ****************************************
 !
   R_T = dble(reaction_rate(0, 0, -1))
+!
+! Start every isotope run of a natural target from empty inventories. The
+! loop below only zeroes the nuclides this isotope produces, so a nuclide
+! made by an earlier isotope but not this one would keep its old inventory:
+! activities would add it to the natural totals again with this isotope's
+! abundance, and the cooling phase would use it as a decaying parent.
+!
+  Niso = 0.
+  Nisorel = 0.
   do iz = Zcomp + 1, Zcomp + 1 - Zdepth, -1
     do it=0,numtime
       Nisotot(iz,it)=0.
